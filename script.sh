@@ -1,5 +1,15 @@
 #!/bin/bash
 
+echo "WARNING: This script will install Samba server on your system."
+read -p "Are you sure you want to continue? [Y/N] " choice
+
+case "$choice" in
+  y|Y ) echo "Continuing with Samba server installation..." ;;
+  n|N ) echo "Aborting script." && exit 1 ;;
+  * ) echo "Invalid choice, aborting script." && exit 1 ;;
+esac
+
+
 # Check if "deck" user's password has been changed
 if [ "$(sudo grep '^deck:' /etc/shadow | cut -d':' -f2)" = "*" ] || [ "$(sudo grep '^deck:' /etc/shadow | cut -d':' -f2)" = "!" ]; then
     # Prompt user to change "deck" user's password
