@@ -84,5 +84,5 @@ EOF
 echo "Restarting smb service..."
 sudo systemctl restart smb.service
 
-# Print logs
+# Print log
 echo "Samba server set up successfully! You can access the 'steamapps' and 'downloads' folders on your Steam Deck from any device on your local network."
