@@ -89,5 +89,5 @@ echo "Samba server set up successfully! You can access the 'steamapps' and 'down
 
 
 # re-enable the readonly filesystem
-sudo steamos-readonly disable
+sudo steamos-readonly enable
 echo "Filesystem now read-only"
