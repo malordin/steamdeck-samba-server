@@ -7,8 +7,6 @@ This is a simple script that sets up a Samba server on your SteamDeck, allowing 
 
 To run the script, simply insert the following command in your SteamDeck terminal:
 
-bash
-
 `sh -c "$(curl -fsSL https://raw.githubusercontent.com/malordin/steamdeck-samba-server/main/script.sh)"` 
 
 This will download and run the `script.sh` file from the GitHub repository, which will automatically install and configure the Samba server on your SteamDeck.
