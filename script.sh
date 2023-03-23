@@ -78,6 +78,16 @@ create mask = 0777
 directory mask = 0777
 force user = deck
 force group = deck
+
+[downloads]
+comment = Steam apps directory on SD card
+path = /run/media/mmcblk0p1/
+browseable = yes
+read only = no
+create mask = 0777
+directory mask = 0777
+force user = deck
+force group = deck
 EOF
 
 # Restart smb service
