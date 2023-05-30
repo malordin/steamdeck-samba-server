@@ -26,8 +26,10 @@ sudo steamos-readonly disable
 
 # Edit pacman.conf file
 echo "Editing pacman.conf file..."
-sudo sed -i '/^SigLevel = Required DatabaseOptional/s/^/#/' /etc/pacman.conf
-sudo sed -i '/^#SigLevel = Required DatabaseOptional/a SigLevel = TrustAll' /etc/pacman.conf
+sudo sed -i '/^SigLevel[[:space:]]*=[[:space:]]*Required DatabaseOptional/s/^/#/' /etc/pacman.conf
+sudo sed -i '/^#SigLevel[[:space:]]*=[[:space:]]*Required DatabaseOptional/a\
+SigLevel = TrustAll\
+' /etc/pacman.conf
 
 # Populate pacman keys
 echo "Populating pacman keys..."
