@@ -116,14 +116,16 @@ EOF
 echo "Restarting smb service..."
 sudo systemctl restart smb.service
 
+# re-enable the readonly filesystem
+sudo steamos-readonly enable
+echo "Filesystem now read-only"
+
+
 if [ "$1" = "gui" ]; then
   zenity --info --width=400 --height=100 --text="Samba server set up successfully! You can access the 'steamapps' and 'downloads' folders on your Steam Deck from any device on your local network."
   else 
     echo "Samba server set up successfully! You can access the'steamapps' and 'downloads' folders on your Steam Deck from any device on your local network."
-    read -p "Press Enter to continue..." ;;
+    read -p "Press Enter to continue..." 
 fi
-      
 
-# re-enable the readonly filesystem
-sudo steamos-readonly enable
-echo "Filesystem now read-only"
+      
