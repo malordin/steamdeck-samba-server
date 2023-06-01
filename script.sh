@@ -1,8 +1,14 @@
 #!/bin/bash
 
-if [ -t 0 ]; then
-  # Script is running in an interactive shell (console)
-  echo "Console detected."
+if [ -n "$1" ]; then
+  # Script is running with a GUI argument (icon)
+  if zenity --question --text="This script will install Samba server on your system. Are you sure you want to continue?"; then
+    echo "Continuing with Samba server installation..."
+  else
+    echo "Aborting script." && exit 1
+  fi
+else
+  # Script is running without a GUI argument (console)
   echo "WARNING: This script will install Samba server on your system."
   read -p "Are you sure you want to continue? [Y/N] " choice
 
@@ -11,13 +17,6 @@ if [ -t 0 ]; then
     n|N ) echo "Aborting script." && exit 1 ;;
     * ) echo "Invalid choice, aborting script." && exit 1 ;;
   esac
-else
-  # Script is running in a non-interactive shell (icon)
-  if zenity --question --text="This script will install Samba server on your system. Are you sure you want to continue?"; then
-    echo "Continuing with Samba server installation..."
-  else
-    echo "Aborting script." && exit 1
-  fi
 fi
 
 
