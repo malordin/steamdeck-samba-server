@@ -1,5 +1,14 @@
 #!/bin/bash
 
+
+RED="31"
+GREEN="32"
+BOLDGREEN="\e[1;${GREEN}m"
+ITALICRED="\e[3;${RED}m"
+ENDCOLOR="\e[0m"
+
+
+
 if [ "$1" = "gui" ]; then
   # Script is running with a GUI argument (icon)
   if zenity --question --width=400 --height=100 --text="This script will install Samba server on your system. Did you change the password via passwd?"; then
@@ -124,7 +133,7 @@ echo "Filesystem now read-only"
 if [ "$1" = "gui" ]; then
   zenity --info --width=400 --height=100 --text="Samba server set up successfully! You can access the 'steamapps', 'downloads' and 'mmcblk0p1' folders on your Steam Deck from any device on your local network."
   else 
-    echo "Samba server set up successfully! You can access the 'steamapps', 'downloads' and 'mmcblk0p1' folders on your Steam Deck from any device on your local network."
+    echo -e "${BOLDGREEN}Samba server set up successfully!${ENDCOLOR} You can access the 'steamapps', 'downloads' and 'mmcblk0p1' folders on your Steam Deck from any device on your local network."
     read -p "Press Enter to continue..." 
 fi
 
