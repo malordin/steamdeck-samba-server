@@ -2,7 +2,7 @@
 
 if [ "$1" = "gui" ]; then
   # Script is running with a GUI argument (icon)
-  if zenity --question --text="This script will install Samba server on your system. Are you sure you want to continue?"; then
+  if zenity --question --width=400 --height=100 --text="This script will install Samba server on your system. Are you sure you want to continue?"; then
     echo "Continuing with Samba server installation..."
   else
     echo "Aborting script." && exit 1
