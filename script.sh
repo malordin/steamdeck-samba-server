@@ -75,7 +75,19 @@ sudo pacman -Sy --noconfirm samba
 
 echo "Adding 'deck' user to samba user database..."
 read -p "Press Enter to continue..." 
-sudo smbpasswd -a deck || (echo "An error occurred. Press Enter to continue..." && read)
+sudo smbpasswd -a deck
+
+echo "Adding 'deck' user to samba user database..."
+read -p "Press Enter to continue..." 
+sudo smbpasswd -a deck
+
+echo "Adding 'deck' user to samba user database..."
+read -p "Press Enter to continue..." 
+sudo smbpasswd -a deck
+
+echo "Adding 'deck' user to samba user database..."
+read -p "Press Enter to continue..." 
+sudo smbpasswd -a deck
 
 # Enable and start smb service
 echo "Enabling and starting smb service..."
