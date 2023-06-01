@@ -72,10 +72,8 @@ sudo pacman-key --init
 echo "Installing samba..."
 sudo pacman -Sy --noconfirm samba
 
-# Add "deck" user to samba user database
 echo "Adding 'deck' user to samba user database..."
-echo "Please enter the same password as on Steam Deck:"
-sudo smbpasswd -a deck
+sudo smbpasswd -a deck || (echo "An error occurred. Press Enter to continue..." && read)
 
 # Enable and start smb service
 echo "Enabling and starting smb service..."
