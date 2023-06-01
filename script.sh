@@ -2,22 +2,32 @@
 
 if [ "$1" = "gui" ]; then
   # Script is running with a GUI argument (icon)
-  if zenity --question --width=400 --height=100 --text="This script will install Samba server on your system. Are you sure you want to continue?"; then
-    echo "Continuing with Samba server installation..."
+  if zenity --question --width=400 --height=100 --text="This script will install Samba server on your system. Did you change the password via passwd?"; then
+    # User answered "yes" or "Y" or "y"
+    password=$(zenity --password --title="Enter your password")
+    echo "$password" | sudo -S echo "Continuing with Samba server installation..."
   else
-    echo "Aborting script." && exit 1
+    # User answered "no" or "N" or "n"
+    zenity --error --width=400 --height=100 --text="This script requires your password to work correctly. Please change your password via passwd and try again."
+    exit 1
   fi
 else
   # Script is running without a GUI argument (console)
   echo "WARNING: This script will install Samba server on your system."
-  read -p "Are you sure you want to continue? [Y/N] " choice
+  read -p "Did you change the password via passwd? [Y/N] " password_choice
 
-  case "$choice" in
-    y|Y ) echo "Continuing with Samba server installation..." ;;
-    n|N ) echo "Aborting script." && exit 1 ;;
-    * ) echo "Invalid choice, aborting script." && exit 1 ;;
+  case "$password_choice" in
+    y|Y ) # User answered "yes" or "Y" or "y"
+          read -s -p "Please enter your password: " password
+          echo "$password" | sudo -S echo "Continuing with Samba server installation..." ;;
+    n|N ) # User answered "no" or "N" or "n"
+          echo "This script requires your password to work correctly. Please change your password via passwd and try again."
+          exit 1 ;;
+    * )   # User provided an invalid choice
+          echo "Invalid choice, aborting script." && exit 1 ;;
   esac
 fi
+
 
 
 # Check if "deck" user's password has been changed
