@@ -74,19 +74,6 @@ sudo pacman -Sy --noconfirm samba
 
 
 echo "Adding 'deck' user to samba user database..."
-read -p "Press Enter to continue..." 
-sudo smbpasswd -a deck
-
-echo "Adding 'deck' user to samba user database..."
-read -p "Press Enter to continue..." 
-sudo smbpasswd -a deck
-
-echo "Adding 'deck' user to samba user database..."
-read -p "Press Enter to continue..." 
-sudo smbpasswd -a deck
-
-echo "Adding 'deck' user to samba user database..."
-read -p "Press Enter to continue..." 
 sudo smbpasswd -a deck
 
 # Enable and start smb service
