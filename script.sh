@@ -72,7 +72,9 @@ sudo pacman-key --init
 echo "Installing samba..."
 sudo pacman -Sy --noconfirm samba
 
+
 echo "Adding 'deck' user to samba user database..."
+read -p "Press Enter to continue..." 
 sudo smbpasswd -a deck || (echo "An error occurred. Press Enter to continue..." && read)
 
 # Enable and start smb service
