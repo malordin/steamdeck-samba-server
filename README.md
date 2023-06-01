@@ -22,3 +22,16 @@ You should then be prompted to enter your SteamDeck username and password. Once 
 ## License
 
 This script is licensed under the [MIT License](https://github.com/malordin/steamdeck-samba-server/blob/main/LICENSE). Feel free to use, modify, and distribute it as you see fit.
+
+
+
+
+## Star History
+
+<a href="https://star-history.com/#malordin/steamdeck-samba-server&Date">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=malordin/steamdeck-samba-server&type=Date&theme=dark" />
+    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=malordin/steamdeck-samba-server&type=Date" />
+    <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=malordin/steamdeck-samba-server&type=Date" />
+  </picture>
+</a>
