@@ -122,9 +122,9 @@ echo "Filesystem now read-only"
 
 
 if [ "$1" = "gui" ]; then
-  zenity --info --width=400 --height=100 --text="Samba server set up successfully! You can access the 'steamapps' and 'downloads' folders on your Steam Deck from any device on your local network."
+  zenity --info --width=400 --height=100 --text="Samba server set up successfully! You can access the 'steamapps', 'downloads' and 'mmcblk0p1' folders on your Steam Deck from any device on your local network."
   else 
-    echo "Samba server set up successfully! You can access the'steamapps' and 'downloads' folders on your Steam Deck from any device on your local network."
+    echo "Samba server set up successfully! You can access the 'steamapps', 'downloads' and 'mmcblk0p1' folders on your Steam Deck from any device on your local network."
     read -p "Press Enter to continue..." 
 fi
 
