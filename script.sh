@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ -n "$1" ]; then
+if [ "$1" = "gui" ]; then
   # Script is running with a GUI argument (icon)
   if zenity --question --text="This script will install Samba server on your system. Are you sure you want to continue?"; then
     echo "Continuing with Samba server installation..."
