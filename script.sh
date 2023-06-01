@@ -74,7 +74,13 @@ sudo pacman -Sy --noconfirm samba
 
 
 echo "Adding 'deck' user to samba user database..."
-sudo smbpasswd -a deck
+if [ "$1" = "gui" ]; then
+    password=$(zenity --password --title "Set Samba Password" --width=400)
+    echo "$password" | sudo smbpasswd -s -a deck
+    echo "$password" | sudo smbpasswd -s -e deck
+else
+    sudo smbpasswd -a deck
+fi
 
 # Enable and start smb service
 echo "Enabling and starting smb service..."
