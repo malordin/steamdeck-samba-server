@@ -1,0 +1,8 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Name=Install Samba Server on Steam Deck script
+Exec=curl -fsSL https://raw.githubusercontent.com/malordin/steamdeck-samba-server/main/script.sh -o script.sh && sh script.sh gui; rm -f script.sh
+Icon=steamdeck-gaming-return
+Terminal=true
+Type=Application
+StartupNotify=false
