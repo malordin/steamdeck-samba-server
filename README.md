@@ -3,7 +3,9 @@
   <i>This is a simple script that sets up a Samba server on your SteamDeck, allowing you to easily transfer files to and from your device.</i>
   <br/>
   <br/>
-  <img width="120" src="https://i.ibb.co/QFhz3Pv/steamdeck.png" />
+  <br/>
+  <br/>
+  <a name="download button" href="https://raw.githubusercontent.com/malordin/steamdeck-samba-server/main/samba.download"><img src="./docs/download_button.svg"  alt="Download steam-deck-samba-server" width="350px" style="padding-top: 15px;"></a>
   <br/>
   <br/>
   <a href="./LICENSE">
