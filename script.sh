@@ -2,6 +2,7 @@
 
 if [ -t 0 ]; then
   # Script is running in an interactive shell (console)
+  echo "Console detected."
   echo "WARNING: This script will install Samba server on your system."
   read -p "Are you sure you want to continue? [Y/N] " choice
 
