@@ -1,6 +1,15 @@
-# SteamDeck Samba Server
-
-This is a simple script that sets up a Samba server on your SteamDeck, allowing you to easily transfer files to and from your device.
+<h1 align="center">SteamDeck Samba Server</h1>
+<p align="center">
+  <i>This is a simple script that sets up a Samba server on your SteamDeck, allowing you to easily transfer files to and from your device.</i>
+  <br/>
+  <br/>
+  <img width="120" src="https://i.ibb.co/QFhz3Pv/steamdeck.png" />
+  <br/>
+  <br/>
+  <a href="./LICENSE">
+    <img src="https://img.shields.io/badge/License-MIT-0aa8d2?logo=opensourceinitiative&logoColor=fff" alt="License MIT">
+  </a>
+</p>
 
 ## Installation
 
@@ -23,10 +32,6 @@ You should then be prompted to enter your SteamDeck username and password. Once 
 ## Contributing
 
 This project is open for criticism and contributions. Pull requests are accepted, and you can open [issues](https://github.com/malordin/steamdeck-samba-server/issues) in case of problems. If you like the project, you can show your support by putting a star.
-
-<iframe src="https://ghbtns.com/github-btn.html?user=malordin&repo=steamdeck-samba-server&type=star&count=true&size=large" frameborder="0" scrolling="0" width="170" height="30" title="GitHub"></iframe>
-
-<iframe src="https://ghbtns.com/github-btn.html?user=malordin&repo=steamdeck-samba-server&type=star&count=true" frameborder="0" scrolling="0" width="150" height="20" title="GitHub"></iframe>
 
 Thank you for your interest in this project. I am always open to feedback and suggestions to improve the project.
 
