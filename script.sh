@@ -125,7 +125,8 @@ echo "Enabling and starting smb service..."
 sudo systemctl enable smb.service
 sudo systemctl start smb.service
 
-
+firewall-cmd --permanent --zone=public --add-service=samba
+firewall-cmd --reload
 
 
 # Restart smb service
