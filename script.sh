@@ -60,13 +60,15 @@ sudo sed -i '/^#SigLevel[[:space:]]*=[[:space:]]*Required DatabaseOptional/a\
 SigLevel = TrustAll\
 ' /etc/pacman.conf
 
+# Initialize pacman keys
+echo "Initializing pacman keys..."
+sudo pacman-key --init
+
 # Populate pacman keys
 echo "Populating pacman keys..."
 sudo pacman-key --populate archlinux
 
-# Initialize pacman keys
-echo "Initializing pacman keys..."
-sudo pacman-key --init
+
 
 # Install samba
 echo "Installing samba..."
