@@ -74,22 +74,6 @@ sudo pacman-key --populate archlinux
 echo "Installing samba..."
 sudo pacman -Sy --noconfirm samba
 
-
-echo "Adding 'deck' user to samba user database..."
-if [ "$1" = "gui" ]; then
-    password=$(zenity --password --title "Set Samba Password" --width=400)
-    (echo "$password"; echo "$password") | sudo smbpasswd -s -a deck
-else
-    sudo smbpasswd -a deck
-fi
-
-# Enable and start smb service
-echo "Enabling and starting smb service..."
-sudo systemctl enable smb.service
-sudo systemctl start smb.service
-
-
-
 # Write new smb.conf file
 echo "Writing new smb.conf file..."
 sudo tee /etc/samba/smb.conf > /dev/null <<EOF
@@ -126,6 +110,23 @@ directory mask = 0777
 force user = deck
 force group = deck
 EOF
+
+
+echo "Adding 'deck' user to samba user database..."
+if [ "$1" = "gui" ]; then
+    password=$(zenity --password --title "Set Samba Password" --width=400)
+    (echo "$password"; echo "$password") | sudo smbpasswd -s -a deck
+else
+    sudo smbpasswd -a deck
+fi
+
+# Enable and start smb service
+echo "Enabling and starting smb service..."
+sudo systemctl enable smb.service
+sudo systemctl start smb.service
+
+
+
 
 # Restart smb service
 echo "Restarting smb service..."
