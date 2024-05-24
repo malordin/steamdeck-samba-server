@@ -73,13 +73,20 @@ sudo pacman -Sy --noconfirm samba
 # Ask user for share configuration
 echo "Enter the path of the directory you want to share, or press ENTER to share the entire /home directory:"
 read -p "Path: " custom_path
+
+# Check if the path is a directory and exists
 if [[ -z "$custom_path" ]]; then
   custom_path="/home/"
   share_name="home"
   echo "No path entered. Defaulting to share the entire /home directory."
 else
-  share_name=$(basename "$custom_path")
-  echo "You have chosen to share: $custom_path"
+  if [[ -d "$custom_path" ]]; then
+    share_name=$(basename "$custom_path")
+    echo "You have chosen to share: $custom_path"
+  else
+    echo "The path '$custom_path' does not exist or is not a directory. Please check the path and try again."
+    exit 1
+  fi
 fi
 
 # Confirm sharing setup
