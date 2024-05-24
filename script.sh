@@ -56,9 +56,7 @@ sudo steamos-readonly disable
 # Edit pacman.conf file
 echo "Editing pacman.conf file..."
 sudo sed -i '/^SigLevel[[:space:]]*=[[:space:]]*Required DatabaseOptional/s/^/#/' /etc/pacman.conf
-sudo sed -i '/^#SigLevel[[:space:]]*=[[:space:]]*Required DatabaseOptional/a\
-SigLevel = TrustAll\
-' /etc/pacman.conf
+sudo sed -i '/^#SigLevel[[:space:]]*=[[:space:]]*Required DatabaseOptional/a\SigLevel = TrustAll' /etc/pacman.conf
 
 # Initialize pacman keys
 echo "Initializing pacman keys..."
@@ -68,11 +66,36 @@ sudo pacman-key --init
 echo "Populating pacman keys..."
 sudo pacman-key --populate archlinux
 
-
-
-# Install samba
+# Install Samba
 echo "Installing samba..."
 sudo pacman -Sy --noconfirm samba
+
+# Ask user for share configuration
+echo "Enter the path of the directory you want to share, or press ENTER to share the entire /home directory:"
+read -p "Path: " custom_path
+if [[ -z "$custom_path" ]]; then
+  custom_path="/home/"
+  share_name="home"
+  echo "No path entered. Defaulting to share the entire /home directory."
+else
+  share_name=$(basename "$custom_path")
+  echo "You have chosen to share: $custom_path"
+fi
+
+# Confirm sharing setup
+while true; do
+    read -p "Are you sure you want to proceed with sharing this directory? (y/n): " confirmation
+    case "$confirmation" in
+        [Yy] ) 
+            echo "Proceeding with sharing setup..."
+            break ;;
+        [Nn] ) 
+            echo "Setup aborted by user."
+            exit 1 ;;
+        * ) 
+            echo "Invalid input. Please enter 'Y' for Yes or 'N' for No." ;;
+    esac
+done
 
 # Write new smb.conf file
 echo "Writing new smb.conf file..."
@@ -80,39 +103,9 @@ sudo tee /etc/samba/smb.conf > /dev/null <<EOF
 [global]
 netbios name = steamdeck
 
-[steamapps]
-comment = Steam apps directory
-path = /home/deck/.local/share/Steam/steamapps/
-browseable = yes
-read only = no
-create mask = 0777
-directory mask = 0777
-force user = deck
-force group = deck
-
-[home]
-comment = Home folder
-path = /home/
-browseable = yes
-read only = no
-create mask = 0777
-directory mask = 0777
-force user = deck
-force group = deck
-
-[downloads]
-comment = Downloads directory
-path = /home/deck/Downloads/
-browseable = yes
-read only = no
-create mask = 0777
-directory mask = 0777
-force user = deck
-force group = deck
-
-[mmcblk0p1]
-comment = Steam apps directory on SD card
-path = /run/media/mmcblk0p1/
+[$share_name]
+comment = $share_name directory
+path = $custom_path
 browseable = yes
 read only = no
 create mask = 0777
@@ -147,12 +140,10 @@ sudo systemctl restart smb.service
 sudo steamos-readonly enable
 echo "Filesystem now read-only"
 
-
+# Final confirmation
 if [ "$1" = "gui" ]; then
-  zenity --info --width=400 --height=100 --text="Samba server set up successfully! You can access the 'steamapps', 'downloads' and 'mmcblk0p1' folders on your Steam Deck from any device on your local network."
-  else 
-    echo -e "${BOLDGREEN}Samba server set up successfully!${ENDCOLOR} You can access the 'steamapps', 'downloads' and 'mmcblk0p1' folders on your Steam Deck from any device on your local network."
-    read -p "Press Enter to continue..." 
+  zenity --info --width=400 --height=100 --text="Samba server set up successfully! You can access the '$share_name' folder at '$custom_path' on your Steam Deck from any device on your local network."
+  else
+    echo -e "${BOLDGREEN}Samba server set up successfully!${ENDCOLOR} You can access the '$share_name' folder at '$custom_path' on your Steam Deck from any device on your local network."
+    read -p "Press Enter to continue..."
 fi
-
-      
