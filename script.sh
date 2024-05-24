@@ -90,6 +90,16 @@ directory mask = 0777
 force user = deck
 force group = deck
 
+[home]
+comment = Home folder
+path = /home/
+browseable = yes
+read only = no
+create mask = 0777
+directory mask = 0777
+force user = deck
+force group = deck
+
 [downloads]
 comment = Downloads directory
 path = /home/deck/Downloads/
