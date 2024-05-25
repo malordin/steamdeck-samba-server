@@ -101,6 +101,7 @@ while true; do
     if [[ -z "$custom_path" ]]; then
         custom_path="/home/"
         share_name="home"
+        add_smb_share "$custom_path" "$share_name"
         echo "No path entered. Defaulting to share the entire /home directory."
     elif [[ -d "$custom_path" ]]; then
         share_name=$(basename "$custom_path")
