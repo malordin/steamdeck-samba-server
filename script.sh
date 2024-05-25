@@ -70,12 +70,34 @@ sudo pacman-key --populate archlinux
 echo "Installing samba..."
 sudo pacman -Sy --noconfirm samba
 
-# Ask user for share configuration
+# Initialize Samba configuration after installed
+echo "Initializing new smb.conf file..."
+sudo tee /etc/samba/smb.conf > /dev/null <<EOF
+[global]
+netbios name = steamdeck
+EOF
+
+# Function to add a new share to smb.conf
+add_smb_share() {
+    echo "Adding share for $1..."
+    sudo tee -a /etc/samba/smb.conf > /dev/null <<EOF
+[$2]
+comment = $2 directory
+path = $1
+browseable = yes
+read only = no
+create mask = 0777
+directory mask = 0777
+force user = deck
+force group = deck
+EOF
+}
+
+# Handle multiple directory inputs
 while true; do
     echo "Enter the path of the directory you want to share, or press ENTER to share the entire /home directory:"
     read -p "Path: " custom_path
-
-    # Check if the path is a directory and exists
+    # default to /home/
     if [[ -z "$custom_path" ]]; then
         custom_path="/home/"
         share_name="home"
@@ -83,16 +105,22 @@ while true; do
         break
     elif [[ -d "$custom_path" ]]; then
         share_name=$(basename "$custom_path")
-        echo "You have chosen to share: $custom_path"
-        break
+        # create new share
+        add_smb_share "$custom_path" "$share_name"
+        echo "Directory added: $custom_path"
     else
         echo "The path '$custom_path' does not exist or is not a directory. Please check the path and try again."
+    fi
+
+    read -p "Would you like to add another directory? (Y/n): " add_more
+    if [[ $add_more =~ ^[Nn] ]]; then
+        break
     fi
 done
 
 # Confirm sharing setup
 while true; do
-    read -p "Are you sure you want to proceed with sharing this directory? (y/n): " confirmation
+    read -p "Are you sure you want to proceed with sharing directories? (y/n): " confirmation
     case "$confirmation" in
         [Yy] ) 
             echo "Proceeding with sharing setup..."
@@ -105,22 +133,6 @@ while true; do
     esac
 done
 
-# Write new smb.conf file
-echo "Writing new smb.conf file..."
-sudo tee /etc/samba/smb.conf > /dev/null <<EOF
-[global]
-netbios name = steamdeck
-
-[$share_name]
-comment = $share_name directory
-path = $custom_path
-browseable = yes
-read only = no
-create mask = 0777
-directory mask = 0777
-force user = deck
-force group = deck
-EOF
 
 
 echo "Adding 'deck' user to samba user database..."
@@ -150,8 +162,8 @@ echo "Filesystem now read-only"
 
 # Final confirmation
 if [ "$1" = "gui" ]; then
-  zenity --info --width=400 --height=100 --text="Samba server set up successfully! You can access the '$share_name' folder at '$custom_path' on your Steam Deck from any device on your local network."
-  else
-    echo -e "${BOLDGREEN}Samba server set up successfully!${ENDCOLOR} You can access the '$share_name' folder at '$custom_path' on your Steam Deck from any device on your local network."
+    zenity --info --width=400 --height=100 --text="Samba server set up successfully! You can now access the shared directories on your Steam Deck from any device on your local network."
+else
+    echo -e "${BOLDGREEN}Samba server set up successfully!${ENDCOLOR} You can now access the shared directories on your Steam Deck from any device on your local network."
     read -p "Press Enter to continue..."
 fi
