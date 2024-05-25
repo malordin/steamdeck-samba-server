@@ -102,7 +102,6 @@ while true; do
         custom_path="/home/"
         share_name="home"
         echo "No path entered. Defaulting to share the entire /home directory."
-        break
     elif [[ -d "$custom_path" ]]; then
         share_name=$(basename "$custom_path")
         # create new share
