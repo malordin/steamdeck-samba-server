@@ -56,9 +56,7 @@ sudo steamos-readonly disable
 # Edit pacman.conf file
 echo "Editing pacman.conf file..."
 sudo sed -i '/^SigLevel[[:space:]]*=[[:space:]]*Required DatabaseOptional/s/^/#/' /etc/pacman.conf
-sudo sed -i '/^#SigLevel[[:space:]]*=[[:space:]]*Required DatabaseOptional/a\
-SigLevel = TrustAll\
-' /etc/pacman.conf
+sudo sed -i '/^#SigLevel[[:space:]]*=[[:space:]]*Required DatabaseOptional/a\SigLevel = TrustAll' /etc/pacman.conf
 
 # Initialize pacman keys
 echo "Initializing pacman keys..."
@@ -68,41 +66,24 @@ sudo pacman-key --init
 echo "Populating pacman keys..."
 sudo pacman-key --populate archlinux
 
-
-
-# Install samba
+# Install Samba
 echo "Installing samba..."
 sudo pacman -Sy --noconfirm samba
 
-# Write new smb.conf file
-echo "Writing new smb.conf file..."
+# Initialize Samba configuration after installed
+echo "Initializing new smb.conf file..."
 sudo tee /etc/samba/smb.conf > /dev/null <<EOF
 [global]
 netbios name = steamdeck
+EOF
 
-[steamapps]
-comment = Steam apps directory
-path = /home/deck/.local/share/Steam/steamapps/
-browseable = yes
-read only = no
-create mask = 0777
-directory mask = 0777
-force user = deck
-force group = deck
-
-[downloads]
-comment = Downloads directory
-path = /home/deck/Downloads/
-browseable = yes
-read only = no
-create mask = 0777
-directory mask = 0777
-force user = deck
-force group = deck
-
-[mmcblk0p1]
-comment = Steam apps directory on SD card
-path = /run/media/mmcblk0p1/
+# Function to add a new share to smb.conf
+add_smb_share() {
+    echo "Adding share for $1..."
+    sudo tee -a /etc/samba/smb.conf > /dev/null <<EOF
+[$2]
+comment = $2 directory
+path = $1
 browseable = yes
 read only = no
 create mask = 0777
@@ -110,6 +91,48 @@ directory mask = 0777
 force user = deck
 force group = deck
 EOF
+}
+
+# Handle multiple directory inputs
+while true; do
+    echo "Enter the path of the directory you want to share, or press ENTER to share the entire /home directory:"
+    read -p "Path: " custom_path
+    # default to /home/
+    if [[ -z "$custom_path" ]]; then
+        custom_path="/home/"
+        share_name="home"
+        add_smb_share "$custom_path" "$share_name"
+        echo "No path entered. Defaulting to share the entire /home directory."
+    elif [[ -d "$custom_path" ]]; then
+        share_name=$(basename "$custom_path")
+        # create new share
+        add_smb_share "$custom_path" "$share_name"
+        echo "Directory added: $custom_path"
+    else
+        echo "The path '$custom_path' does not exist or is not a directory. Please check the path and try again."
+    fi
+
+    read -p "Would you like to add another directory? (Y/n): " add_more
+    if [[ $add_more =~ ^[Nn] ]]; then
+        break
+    fi
+done
+
+# Confirm sharing setup
+while true; do
+    read -p "Are you sure you want to proceed with sharing directories? (y/n): " confirmation
+    case "$confirmation" in
+        [Yy] ) 
+            echo "Proceeding with sharing setup..."
+            break ;;
+        [Nn] ) 
+            echo "Setup aborted by user."
+            exit 1 ;;
+        * ) 
+            echo "Invalid input. Please enter 'Y' for Yes or 'N' for No." ;;
+    esac
+done
+
 
 
 echo "Adding 'deck' user to samba user database..."
@@ -137,12 +160,10 @@ sudo systemctl restart smb.service
 sudo steamos-readonly enable
 echo "Filesystem now read-only"
 
-
+# Final confirmation
 if [ "$1" = "gui" ]; then
-  zenity --info --width=400 --height=100 --text="Samba server set up successfully! You can access the 'steamapps', 'downloads' and 'mmcblk0p1' folders on your Steam Deck from any device on your local network."
-  else 
-    echo -e "${BOLDGREEN}Samba server set up successfully!${ENDCOLOR} You can access the 'steamapps', 'downloads' and 'mmcblk0p1' folders on your Steam Deck from any device on your local network."
-    read -p "Press Enter to continue..." 
+    zenity --info --width=400 --height=100 --text="Samba server set up successfully! You can now access the shared directories on your Steam Deck from any device on your local network."
+else
+    echo -e "${BOLDGREEN}Samba server set up successfully!${ENDCOLOR} You can now access the shared directories on your Steam Deck from any device on your local network."
+    read -p "Press Enter to continue..."
 fi
-
-      
